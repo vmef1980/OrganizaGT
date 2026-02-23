@@ -1,0 +1,330 @@
+// productos.js - Generado automáticamente el 23/02/2026 10:48
+// No editar manualmente → se sobrescribe con el script Python
+
+export const productos = [
+    {
+        "id": "IND-THEBOX-YELLOW",
+        "titulo": "THE BOX AMARILLA",
+        "descripcion": "MATERIAL: HDPE (POLIELITENO DE ALTA DENSIDAD)\n\nMEDIDAS 60*40*30cm\n\nCAPACIDAD DE 57 LITROS",
+        "precio": 129.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2024/02/Unknown-6-600x799.jpeg",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "THE_BOX",
+            "nombre": "THE BOX"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2024/02/Unknown-6-600x799.jpeg"
+        ]
+    },
+    {
+        "id": "IND-THEBOX-BLUE",
+        "titulo": "THE BOX AZUL",
+        "descripcion": "MATERIAL: HDPE (POLIELITENO DE ALTA DENSIDAD)\n\nMEDIDAS 60*40*30cm\n\nCAPACIDAD DE 57 LITROS",
+        "precio": 129.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2024/02/Unknown-5-600x799.jpeg",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "THE_BOX",
+            "nombre": "THE BOX"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2024/02/Unknown-5-600x799.jpeg"
+        ]
+    },
+    {
+        "id": "IND-THEBOX-GREY",
+        "titulo": "THE BOX GRIS",
+        "descripcion": "MATERIAL: HDPE (POLIELITENO DE ALTA DENSIDAD)\n\nMEDIDAS 60*40*30cm\n\nCAPACIDAD DE 57 LITROS",
+        "precio": 129.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2024/02/Unknown-2-600x799.jpeg",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "THE_BOX",
+            "nombre": "THE BOX"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2024/02/Unknown-2-600x799.jpeg"
+        ]
+    },
+    {
+        "id": "IND-THEBOX-RED",
+        "titulo": "THE BOX ROJA",
+        "descripcion": "MATERIAL: HDPE (POLIELITENO DE ALTA DENSIDAD)\n\nMEDIDAS 60*40*30cm\n\nCAPACIDAD DE 57 LITROS",
+        "precio": 129.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2024/02/Unknown-7-600x799.jpeg",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "THE_BOX",
+            "nombre": "THE BOX"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2024/02/Unknown-7-600x799.jpeg"
+        ]
+    },
+    {
+        "id": "IND-THEBOX-VERDE",
+        "titulo": "THE BOX VERDE",
+        "descripcion": "MATERIAL: HDPE (POLIELITENO DE ALTA DENSIDAD)\n\nMEDIDAS 60*40*30cm\n\nCAPACIDAD DE 57 LITROS",
+        "precio": 129.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2024/02/Unknown-4-600x799.jpeg",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "THE_BOX",
+            "nombre": "THE BOX"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2024/02/Unknown-4-600x799.jpeg"
+        ]
+    },
+    {
+        "id": "IND-GREENBOX-S-40",
+        "titulo": "CAJA ORGANIZACIÓN INDUSTRIAL GREEN BOX S",
+        "descripcion": "Dimensiones: 62×41.5×22.5cm\nCapacidad: 40L",
+        "precio": 99.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-1-600x407.png",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "GREEN_BOX",
+            "nombre": "GREEN BOX"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-1-600x407.png",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-3-600x600.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-2.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-2.jpg"
+        ]
+    },
+    {
+        "id": "IND-GREENBOX-M-60",
+        "titulo": "CAJA ORGANIZACIÓN INDUSTRIAL GREEN BOX M",
+        "descripcion": "Dimensiones: 62×41.5×33.5cm\nCapacidad: 60L",
+        "precio": 119.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-1-600x407.png",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "GREEN_BOX",
+            "nombre": "GREEN BOX"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-1-600x407.png",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-3-600x600.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-2.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-2.jpg"
+        ]
+    },
+    {
+        "id": "IND-GREENBOX-L-80",
+        "titulo": "CAJA ORGANIZACIÓN INDUSTRIAL GREEN BOX L",
+        "descripcion": "Dimensiones: 62×41.5x43cm\nCapacidad: 80L",
+        "precio": 139.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-1-600x407.png",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "GREEN_BOX",
+            "nombre": "GREEN BOX"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-1-600x407.png",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-3-600x600.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-2.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-2.jpg"
+        ]
+    },
+    {
+        "id": "IND-GREENBOX-XL-100",
+        "titulo": "CAJA ORGANIZACIÓN INDUSTRIAL GREEN BOX XL",
+        "descripcion": "Dimensiones: 77.5x52x37cm\nCapacidad: 100L",
+        "precio": 149.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-1-600x407.png",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "GREEN_BOX",
+            "nombre": "GREEN BOX"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-1-600x407.png",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-3-600x600.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-GREENBOX-2.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-2.jpg"
+        ]
+    },
+    {
+        "id": "IND-YELLOWBOX-XS-25",
+        "titulo": "CAJA ORGANIZACIÓN INDUSTRIAL YELLOW BOX XS",
+        "descripcion": "Dimensiones: 47x33x26cm\nCapacidad: 25L",
+        "precio": 75.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-1.jpg",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "YELLOW_BOX",
+            "nombre": "YELLOW BOX"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-1.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-3.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-2.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-4-600x600.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-5-600x600.jpg"
+        ]
+    },
+    {
+        "id": "IND-YELLOWBOX-S-55",
+        "titulo": "CAJA ORGANIZACIÓN INDUSTRIAL YELLOW BOX S",
+        "descripcion": "Dimensiones: 60.5x39x38.5cm\nCapacidad: 55L",
+        "precio": 105.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-1.jpg",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "YELLOW_BOX",
+            "nombre": "YELLOW BOX"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-1.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-3.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-2.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-4-600x600.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-5-600x600.jpg"
+        ]
+    },
+    {
+        "id": "IND-YELLOWBOX-M-100",
+        "titulo": "CAJA ORGANIZACIÓN INDUSTRIAL YELLOW BOX M",
+        "descripcion": "Dimensiones: 75.5x51x36.5cm\nCapacidad: 100L",
+        "precio": 150.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-1.jpg",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "YELLOW_BOX",
+            "nombre": "YELLOW BOX"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-1.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-3.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-2.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-4-600x600.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-5-600x600.jpg"
+        ]
+    },
+    {
+        "id": "IND-YELLOWBOX-L-150",
+        "titulo": "CAJA ORGANIZACIÓN INDUSTRIAL YELLOW BOX L",
+        "descripcion": "Dimensiones: 92x58x41.5cm\nCapacidad: 150L",
+        "precio": 200.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-1.jpg",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "YELLOW_BOX",
+            "nombre": "YELLOW BOX"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-1.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-3.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-2.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-4-600x600.jpg",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-5-600x600.jpg"
+        ]
+    },
+    {
+        "id": "IND-YELLOWBOX-XS-CNGRO-25",
+        "titulo": "CAJA ORGANIZACIÓN INDUSTRIAL YELLOW BOX CON CLIP NEGRO XS",
+        "descripcion": "Dimensiones: 45×34.5×23.5cm\nCapacidad: 25L",
+        "precio": 75.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2023/07/yellowbox-clip-negro-600x600.webp",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "YELLOW_BOX_CLIP",
+            "nombre": "YELLOW BOX CON CLIP"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2023/07/yellowbox-clip-negro-600x600.webp",
+            "https://hexibo.com/wp-content/uploads/2023/07/yellowbox-clip-negro-2-300x300.webp",
+            "https://hexibo.com/wp-content/uploads/2023/07/yellowbox-clip-negro-3.webp",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-5-300x300.jpg"
+        ]
+    },
+    {
+        "id": "IND-YELLOWBOX-S-CNEGRO-60",
+        "titulo": "CAJA ORGANIZACIÓN INDUSTRIAL YELLOW BOX CON CLIP NEGRO S",
+        "descripcion": "Dimensiones: 63x43x34cm\nCapacidad: 60L",
+        "precio": 120.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2023/07/yellowbox-clip-negro-600x600.webp",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "YELLOW_BOX_CLIP",
+            "nombre": "YELLOW BOX CON CLIP"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2023/07/yellowbox-clip-negro-600x600.webp",
+            "https://hexibo.com/wp-content/uploads/2023/07/yellowbox-clip-negro-2-300x300.webp",
+            "https://hexibo.com/wp-content/uploads/2023/07/yellowbox-clip-negro-3.webp",
+            "https://hexibo.com/wp-content/uploads/2023/06/IND-YELLOWBOX-5-300x300.jpg"
+        ]
+    },
+    {
+        "id": "IND-YELLOWBOX-M-ABATIBLE-80",
+        "titulo": "CAJA ORGANIZACIÓN INDUSTRIAL CON TAPADERA ABATIBLE",
+        "descripcion": "DIMENSIONES 70*45*36.5 CM\n\nCAPACIDAD 80 LITROS",
+        "precio": 130.0,
+        "imagen": "https://hexibo.com/wp-content/uploads/2023/07/Captura-de-pantalla-2023-07-08-a-las-13.51.27-600x523.png",
+        "categoria": {
+            "id": "ORGANIZACION INDUSTRIAL",
+            "nombre": "ORGANIZACION INDUSTRIAL"
+        },
+        "subcategoria": {
+            "id": "TAPADERA_ABATIBLE",
+            "nombre": "TAPADERA ABATIBLE"
+        },
+        "imagenes": [
+            "https://hexibo.com/wp-content/uploads/2023/07/Captura-de-pantalla-2023-07-08-a-las-13.51.27-600x523.png",
+            "https://hexibo.com/wp-content/uploads/2023/07/Captura-de-pantalla-2023-07-08-a-las-13.52.25-600x608.png",
+            "https://hexibo.com/wp-content/uploads/2023/07/Captura-de-pantalla-2023-07-08-a-las-13.52.45-600x616.png",
+            "https://hexibo.com/wp-content/uploads/2023/07/Captura-de-pantalla-2023-07-08-a-las-13.53.02.png"
+        ]
+    }
+];
