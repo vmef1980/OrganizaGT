@@ -103,24 +103,18 @@
         .disponible { background: #dcfce7; color: #166534; }
         .agotado { background: #fee2e2; color: #991b1b; }
 
-        /* Contenedor Oculto de Renderizado */
-        #render-container { 
-            position: fixed; top: -10000px; left: -10000px; 
-            background: white; padding: 60px; width: 1300px; 
-        }
+        #render-container { position: fixed; top: -10000px; left: -10000px; background: white; padding: 40px; width: 1200px; }
         .catalog-page-container { position: relative; background: white; padding: 20px; }
-        .watermark-center {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%) rotate(-30deg);
-            width: 600px; opacity: 0.05; z-index: 0; pointer-events: none;
-        }
+        .watermark-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg); width: 600px; opacity: 0.05; z-index: 0; pointer-events: none; }
         .catalog-content { position: relative; z-index: 1; }
         .catalog-grid { display: grid; gap: 20px; margin-bottom: 20px; }
-        .catalog-item { border: 1px solid #eee; border-radius: 15px; padding: 15px; text-align: center; background: rgba(255,255,255,0.9); }
-        .catalog-item img { width: 100%; height: 200px; object-fit: contain; border-radius: 10px; margin-bottom: 10px; }
-        .catalog-item h3 { font-size: 1.1rem; margin: 10px 0; color: var(--dark); line-height: 1.2; font-weight: 700; word-wrap: break-word; }
-        .catalog-item p { font-weight: 800; color: var(--primary); font-size: 1.3rem; margin: 5px 0; }
+        .catalog-item { border: 1px solid #eee; border-radius: 15px; padding: 15px; text-align: center; background: rgba(255,255,255,0.9); display: flex; flex-direction: column; align-items: center; }
+        .catalog-img-wrapper { width: 100%; height: 220px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; overflow: hidden; }
+        .catalog-img-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px; }
+        .catalog-item h3 { font-size: 1rem; margin: 10px 0; color: var(--dark); line-height: 1.2; font-weight: 700; width: 100%; }
+        .catalog-item p { font-weight: 800; color: var(--primary); font-size: 1.2rem; margin: 5px 0; }
         .catalog-item .status-tag { font-size: 0.7rem; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; }
+        .catalog-item .item-desc { font-size: 0.65rem; color: #64748b; margin: 8px 0; min-height: 35px; display: block; overflow: visible; line-height: 1.3; text-align: center; }
     </style>
 </head>
 <body>
@@ -239,7 +233,7 @@
         brandName: "OrganizaGT",
         tagline: "GESTIÓN DE INVENTARIOS V1.0",
         logoUrl: "img/OrganizaGT-v2.png",
-        favicon: "img/OrganizaGT-v2.ico", 
+        favicon: "img/OrganizaGT-v2.png", 
         color_primary: "#F47C20", 
         color_dark: "#1C3F60",    
         color_info: "#0074B7",    
@@ -252,31 +246,22 @@
     let showID = true;
     let ascendingOrder = true;
 
-    // CARGA DE IMÁGENES CON TRIPLE REDUNDANCIA
     const getBase64 = async (url) => {
         if (!url) return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
-        
-        const proxies = [
-            (u) => `https://images.weserv.nl/?url=${encodeURIComponent(u.replace('https://', '').replace('http://', ''))}&w=400&output=jpg`,
-            (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
-            (u) => `https://corsproxy.io/?${encodeURIComponent(u)}`
-        ];
-
-        for (const getProxyUrl of proxies) {
-            try {
-                const target = getProxyUrl(url);
-                const response = await fetch(target);
-                if (response.ok) {
-                    const blob = await response.blob();
-                    return new Promise((resolve) => {
-                        const reader = new FileReader();
-                        reader.onloadend = () => resolve(reader.result);
-                        reader.readAsDataURL(blob);
-                    });
-                }
-            } catch (e) { continue; }
+        const esLocal = url.startsWith('img/') || !url.startsWith('http');
+        const finalUrl = esLocal ? url : `https://images.weserv.nl/?url=${encodeURIComponent(url.replace(/^https?:\/\//, ''))}&w=400&output=jpg`;
+        try {
+            const response = await fetch(finalUrl);
+            const blob = await response.blob();
+            return new Promise(resolve => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = () => resolve("");
+                reader.readAsDataURL(blob);
+            });
+        } catch (e) {
+            return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
         }
-        return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN8Ww8AAnEBX609m98AAAAASUVORK5CYII=";
     };
 
     function aplicarConfiguracion() {
@@ -290,6 +275,7 @@
 
     async function cargarDatos() {
         try {
+            // Se agrega Date.now() para forzar la descarga de datos nuevos (Cache Busting)
             const response = await fetch(`${CONFIG.CSV_URL}&t=${Date.now()}`);
             const data = await response.text();
             const rows = parseCSV(data);
@@ -307,20 +293,6 @@
             productosFiltrados = [...productosGlobal];
             renderTabla(productosFiltrados);
         } catch (e) { console.error(e); }
-    }
-
-    function poblarFiltros() {
-        const selProd = document.getElementById('filter-producto');
-        const selCat = document.getElementById('filter-categoria');
-        const selSub = document.getElementById('filter-subcategoria');
-
-        const productosUnicos = [...new Set(productosGlobal.map(p => p.titulo))].sort();
-        const categoriasUnicas = [...new Set(productosGlobal.map(p => p.cat_nom))].sort();
-        const subcategoriasUnicas = [...new Set(productosGlobal.map(p => p.sub_nom).filter(s => s))].sort();
-
-        selProd.innerHTML = '<option value="">Todos los Productos</option>' + productosUnicos.map(p => `<option value="${p}">${p}</option>`).join('');
-        selCat.innerHTML = '<option value="">Todas las Categorías</option>' + categoriasUnicas.map(c => `<option value="${c}">${c}</option>`).join('');
-        selSub.innerHTML = '<option value="">Todas las Subcategorías</option>' + subcategoriasUnicas.map(s => `<option value="${s}">${s}</option>`).join('');
     }
 
     function renderTabla(lista) {
@@ -343,7 +315,6 @@
         const fProd = document.getElementById('filter-producto').value;
         const fCat = document.getElementById('filter-categoria').value;
         const fSub = document.getElementById('filter-subcategoria').value;
-
         productosFiltrados = productosGlobal.filter(p => {
             const matchTxt = p.titulo.toLowerCase().includes(txt) || p.id.toLowerCase().includes(txt) || p.cat_nom.toLowerCase().includes(txt);
             const matchProd = fProd === "" || p.titulo === fProd;
@@ -351,23 +322,77 @@
             const matchSub = fSub === "" || p.sub_nom === fSub;
             return matchTxt && matchProd && matchCat && matchSub;
         });
-
         renderTabla(productosFiltrados);
+    }
+
+    async function exportarPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('l', 'mm', 'a4');
+        const btn = document.querySelector('.btn-pdf');
+        const originalText = btn.innerHTML;
+        btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Generando PDF...';
+        try {
+            const [logoBase64, ...base64Images] = await Promise.all([
+                getBase64(CONFIG.logoUrl),
+                ...productosFiltrados.map(p => getBase64(p.imagen))
+            ]);
+            if(logoBase64 && logoBase64.startsWith('data:image')) {
+                doc.addImage(logoBase64, 'JPEG', 15, 8, 25, 25);
+            }
+            doc.setFontSize(18);
+            doc.setTextColor(CONFIG.color_dark);
+            doc.text(CONFIG.brandName, 45, 18);
+            doc.setFontSize(10);
+            doc.text(`Inventario de Productos - ${new Date().toLocaleDateString()}`, 45, 24);
+            const headers = ['Vista', 'Producto', 'Categoría', 'Descripción', 'Estado', 'Precio'];
+            if(showID) headers.splice(1, 0, 'ID');
+            const rows = productosFiltrados.map((p) => {
+                const fila = ["", p.titulo, p.cat_nom, p.desc || "N/A", p.estado, `Q${p.precio}`];
+                if(showID) fila.splice(1, 0, p.id);
+                return fila;
+            });
+            doc.autoTable({
+                head: [headers],
+                body: rows,
+                startY: 35,
+                didDrawCell: (data) => {
+                    if (data.section === 'body' && data.column.index === 0) {
+                        const imgData = base64Images[data.row.index];
+                        if (imgData && imgData.startsWith('data:image')) {
+                            try {
+                                doc.addImage(imgData, 'JPEG', data.cell.x + 2, data.cell.y + 2, 11, 11);
+                            } catch(err) { console.error(err); }
+                        }
+                    }
+                },
+                styles: { minCellHeight: 15, verticalAlign: 'middle', fontSize: 8, overflow: 'linebreak' },
+                columnStyles: { 0: { cellWidth: 15 }, 3: { cellWidth: 60 } },
+                margin: { top: 35 }
+            });
+            doc.save(`Inventario_${CONFIG.brandName}.pdf`);
+        } catch (e) { console.error(e); alert("Error al exportar PDF."); }
+        finally { btn.disabled = false; btn.innerHTML = originalText; }
+    }
+
+    function poblarFiltros() {
+        const selProd = document.getElementById('filter-producto');
+        const selCat = document.getElementById('filter-categoria');
+        const selSub = document.getElementById('filter-subcategoria');
+        const productosUnicos = [...new Set(productosGlobal.map(p => p.titulo))].sort();
+        const categoriasUnicas = [...new Set(productosGlobal.map(p => p.cat_nom))].sort();
+        const subcategoriasUnicas = [...new Set(productosGlobal.map(p => p.sub_nom).filter(s => s))].sort();
+        selProd.innerHTML = '<option value="">Todos los Productos</option>' + productosUnicos.map(p => `<option value="${p}">${p}</option>`).join('');
+        selCat.innerHTML = '<option value="">Todas las Categorías</option>' + categoriasUnicas.map(c => `<option value="${c}">${c}</option>`).join('');
+        selSub.innerHTML = '<option value="">Todas las Subcategorías</option>' + subcategoriasUnicas.map(s => `<option value="${s}">${s}</option>`).join('');
     }
 
     function toggleIDVisibility() {
         showID = !showID;
         const btn = document.getElementById('btnToggleID');
         const fieldID = document.getElementById('field-id');
-        if (showID) {
-            btn.classList.add('active');
-            btn.querySelector('i').className = 'bi bi-eye';
-            fieldID.classList.remove('hidden');
-        } else {
-            btn.classList.remove('active');
-            btn.querySelector('i').className = 'bi bi-eye-slash';
-            fieldID.classList.add('hidden');
-        }
+        btn.classList.toggle('active', showID);
+        btn.querySelector('i').className = showID ? 'bi bi-eye' : 'bi bi-eye-slash';
+        fieldID.classList.toggle('hidden', !showID);
         renderTabla(productosFiltrados);
     }
 
@@ -391,69 +416,48 @@
         const container = document.getElementById('render-container');
         const btn = document.querySelector('.btn-img');
         const originalText = btn.innerHTML;
-        
-        btn.disabled = true; 
-        btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Preparando...';
-
+        btn.disabled = true; btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Exportando...';
         try {
             const logoBase64 = await getBase64(CONFIG.logoUrl);
             const totalPaginas = Math.ceil(productosFiltrados.length / limitPerPage);
-
             for (let pageIndex = 0; pageIndex < totalPaginas; pageIndex++) {
                 container.innerHTML = ""; 
-                const start = pageIndex * limitPerPage;
-                const chunk = productosFiltrados.slice(start, start + limitPerPage);
-                btn.innerHTML = `<i class="bi bi-hourglass-split"></i> Pág ${pageIndex+1}/${totalPaginas}...`;
-
+                const chunk = productosFiltrados.slice(pageIndex * limitPerPage, (pageIndex + 1) * limitPerPage);
                 const pImagesBase64 = await Promise.all(chunk.map(p => getBase64(p.imagen)));
-
                 const pageDiv = document.createElement('div');
                 pageDiv.className = "catalog-page-container";
-                
-                let html = `
-                    <img src="${logoBase64}" class="watermark-center">
-                    <div class="catalog-content">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; border-bottom:4px solid ${CONFIG.color_primary}; padding-bottom:15px; background:white;">
-                            <div style="display:flex; align-items:center; gap:20px;">
-                                <img src="${logoBase64}" style="height:80px;">
-                                <h1 style="margin:0; font-size:2.5rem; color:${CONFIG.color_dark};">${CONFIG.brandName}</h1>
-                            </div>
-                            <h2 style="margin:0; color:#666;">Página ${pageIndex + 1} / ${totalPaginas}</h2>
-                        </div>
-                        <div class="catalog-grid" style="grid-template-columns: repeat(${cols}, 1fr);">`;
-
+                let html = `<img src="${logoBase64}" class="watermark-center"><div class="catalog-content"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px; border-bottom:4px solid ${CONFIG.color_primary}; padding-bottom:15px; background:white;"><div style="display:flex; align-items:center; gap:20px;"><img src="${logoBase64}" style="height:80px; width:80px; object-fit:contain;"><h1 style="margin:0; font-size:2.5rem; color:${CONFIG.color_dark};">${CONFIG.brandName}</h1></div><h2 style="margin:0; color:#666;">Página ${pageIndex + 1} / ${totalPaginas}</h2></div><div class="catalog-grid" style="grid-template-columns: repeat(${cols}, 1fr);">`;
                 chunk.forEach((p, index) => {
-                    const pImg = pImagesBase64[index];
                     const statusColor = p.estado === 'AGOTADO' ? '#991b1b' : '#166534';
                     const statusBg = p.estado === 'AGOTADO' ? '#fee2e2' : '#dcfce7';
-                    html += `
-                        <div class="catalog-item">
-                            <img src="${pImg}">
-                            <div style="min-height: 80px; display: flex; flex-direction: column; justify-content: center;">
-                                <h3>${p.titulo}</h3>
-                                ${showID ? `<span style="font-size:0.7rem; color:#999; display:block;">ID: ${p.id}</span>` : ''}
-                            </div>
-                            <p>Q${parseFloat(p.precio).toFixed(2)}</p>
-                            <span class="status-tag" style="background:${statusBg}; color:${statusColor}">${p.estado}</span>
-                        </div>`;
+                    html += `<div class="catalog-item"><div class="catalog-img-wrapper"><img src="${pImagesBase64[index]}"></div><h3>${p.titulo}</h3>${showID ? `<span style="font-size:0.7rem; color:#999; display:block; margin-bottom:5px;">ID: ${p.id}</span>` : ''}<div class="item-desc">${p.desc || "Sin descripción"}</div><p>Q${parseFloat(p.precio).toFixed(2)}</p><span class="status-tag" style="background:${statusBg}; color:${statusColor}">${p.estado}</span></div>`;
                 });
-
-                html += `</div><div style="text-align:right; font-size:0.9rem; color:#888;">${CONFIG.tagline}</div></div>`;
+                html += `</div><div style="text-align:right; font-size:0.9rem; color:#888; padding-top:20px;">${CONFIG.tagline}</div></div>`;
                 pageDiv.innerHTML = html;
                 container.appendChild(pageDiv);
-
-                await new Promise(r => setTimeout(r, 600));
-                const canvas = await html2canvas(pageDiv, { useCORS: true, scale: 2, backgroundColor: "#ffffff" });
+                await new Promise(r => setTimeout(r, 1000));
+                const canvas = await html2canvas(pageDiv, { useCORS: true, scale: 2 });
                 const link = document.createElement('a');
                 link.download = `Catalogo_${CONFIG.brandName}_Pag_${pageIndex + 1}.png`;
                 link.href = canvas.toDataURL("image/png");
                 link.click();
             }
-        } catch (e) { alert("Error al exportar"); }
+        } catch (e) { alert("Error al exportar"); console.error(e); }
         finally { btn.disabled = false; btn.innerHTML = originalText; container.innerHTML = ""; }
     }
 
-    window.prepararEdicion = (id) => {
+    function exportarExcel() {
+        const datosExcel = productosFiltrados.map(p => {
+            const base = { "Producto": p.titulo, "Categoría": p.cat_nom, "Descripción": p.desc, "Estado": p.estado, "Precio": p.precio };
+            return showID ? { "ID": p.id, ...base } : base;
+        });
+        const ws = XLSX.utils.json_to_sheet(datosExcel);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Productos");
+        XLSX.writeFile(wb, `Inventario_${CONFIG.brandName}.xlsx`);
+    }
+
+    function prepararEdicion(id) {
         const p = productosGlobal.find(x => x.id === id);
         if (!p) return;
         document.getElementById('id').value = p.id;
@@ -468,12 +472,11 @@
         document.getElementById('precio').value = p.precio;
         document.getElementById('estado').value = p.estado;
         document.getElementById('producto_descripcion').value = p.desc || ""; 
-
         document.getElementById('contenedorForm').classList.add('modo-edicion');
         document.getElementById('btnGuardar').innerText = "Guardar Cambios";
         document.getElementById('btnCancelar').style.display = "block";
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+    }
 
     function cancelarEdicion() {
         document.getElementById('formAdmin').reset();
@@ -481,51 +484,6 @@
         document.getElementById('contenedorForm').classList.remove('modo-edicion');
         document.getElementById('btnGuardar').innerText = "Sincronizar Datos";
         document.getElementById('btnCancelar').style.display = "none";
-    }
-
-    async function exportarPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF('l', 'mm', 'a4');
-        const btn = document.querySelector('.btn-pdf');
-        const originalText = btn.innerHTML;
-        btn.disabled = true; btn.innerHTML = 'Procesando...';
-
-        const tableBody = [];
-        for (let p of productosFiltrados) {
-            const imgData = await getBase64(p.imagen);
-            const row = ["", p.titulo, p.cat_nom, p.estado, `Q${p.precio}`];
-            if(showID) row.splice(1, 0, p.id);
-            tableBody.push({ img: imgData, data: row });
-        }
-
-        const headers = ['Vista', 'Producto', 'Categoría', 'Estado', 'Precio'];
-        if(showID) headers.splice(1, 0, 'ID');
-
-        doc.autoTable({
-            head: [headers],
-            body: tableBody.map(r => r.data),
-            didDrawCell: (data) => {
-                if (data.section === 'body' && data.column.index === 0) {
-                    const rowIdx = data.row.index;
-                    if(tableBody[rowIdx].img) doc.addImage(tableBody[rowIdx].img, 'JPEG', data.cell.x + 2, data.cell.y + 2, 10, 10);
-                }
-            },
-            styles: { minCellHeight: 15, verticalAlign: 'middle' }
-        });
-
-        doc.save(`Inventario_${CONFIG.brandName}.pdf`);
-        btn.disabled = false; btn.innerHTML = originalText;
-    }
-
-    function exportarExcel() {
-        const datosExcel = productosFiltrados.map(p => {
-            const base = { "Producto": p.titulo, "Categoría": p.cat_nom, "Estado": p.estado, "Precio": p.precio };
-            return showID ? { "ID": p.id, ...base } : base;
-        });
-        const ws = XLSX.utils.json_to_sheet(datosExcel);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Productos");
-        XLSX.writeFile(wb, `Inventario_${CONFIG.brandName}.xlsx`);
     }
 
     function parseCSV(text) {
@@ -560,10 +518,11 @@
         };
         try {
             await fetch(CONFIG.SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-            alert("✅ Sincronizado");
+            alert("✅ Sincronizado exitosamente. Recargando datos...");
             cancelarEdicion();
-            setTimeout(cargarDatos, 1500);
-        } catch (e) { alert("Error"); }
+            // Se aumentó el tiempo a 2.5 segundos para dar tiempo a Google a propagar los cambios
+            setTimeout(cargarDatos, 2500);
+        } catch (e) { alert("Error al sincronizar datos."); }
         finally { btn.disabled = false; btn.innerText = "Sincronizar Datos"; }
     };
 

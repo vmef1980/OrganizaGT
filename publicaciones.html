@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social Ads HD Pro | OrganizaGT</title>
     
-    <link rel="icon" type="image/png" href="img/OrganizaGT-v2.png">
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3061/3061341.png">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <style>
@@ -21,7 +21,7 @@
 
         /* Espaciado de controles */
         .form-group { margin-bottom: 15px; }
-        .checkbox-group { display: flex; gap: 10px; align-items: center; margin-bottom: 15px; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 1px solid #eee; }
+        .checkbox-group { display: flex; gap: 10px; align-items: center; margin-bottom: 15px; background: #f9f9f9; padding: 10px; border-radius: 8px; border: 1px solid #eee; flex-wrap: wrap; }
         .checkbox-group label { margin-bottom: 0; cursor: pointer; display: flex; align-items: center; gap: 5px; text-transform: none; font-size: 0.8rem; }
         .checkbox-group input { width: auto; cursor: pointer; }
 
@@ -62,7 +62,7 @@
     <div class="sidebar-content">
         <div class="form-group">
             <label>1. Catálogo (CSV)</label>
-            <input type="text" id="csvUrl" value="https://docs.google.com/spreadsheets/d/e/2PACX-1vR7Zyc9Avk6GHrzXR5lDrs9mvfQMptixZpH9RoZ5I7AqlVGYEWtUqWiLw_ucBxY1rHKBOPHyo9Biftj/pub?output=csv">
+            <input type="text" id="csvUrl" value="">
             <button class="btn btn-primary" onclick="cargarCatalogo()" style="margin-top:8px;">Sincronizar</button>
         </div>
 
@@ -79,6 +79,7 @@
         <div class="checkbox-group">
             <label><input type="checkbox" id="showWeb" onchange="actualizarInterfaz()"> Link Web</label>
             <label><input type="checkbox" id="showWA" onchange="actualizarInterfaz()"> WhatsApp</label>
+            <label><input type="checkbox" id="showPrice" checked onchange="actualizarInterfaz()"> Precio (Q)</label>
         </div>
 
         <div class="form-group">
@@ -130,7 +131,7 @@
         logoParaImagen: "img/OrganizaGT-v2.png",
         csvDefault: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR7Zyc9Avk6GHrzXR5lDrs9mvfQMptixZpH9RoZ5I7AqlVGYEWtUqWiLw_ucBxY1rHKBOPHyo9Biftj/pub?output=csv",
         colorDefault: "#007BC4",
-        hashtagsBase: "#Guatemala #VentasGT #TiendaOnline #EnviosGuate #VisaGT #Efectivo #Ofertas #GuateCocina"
+        hashtagsBase: "#Guatemala #Ventas #TiendaOnline #EnviosGuate #PagoContraEntrega #Ofertas #OrganizaGT #Salones #Belleza #Organizacion"
     };
 
     // Aplicar configuración al cargar
@@ -211,10 +212,8 @@
 
         const waLink = userWA ? `https://wa.me/${userWA.replace(/\D/g,'')}` : "Contáctanos";
         
-        // --- NUEVA LÓGICA DE TÍTULO MARKETPLACE Y HASHTAGS ---
         const tituloMP = `${p.tituloDisplay} | Nuevo | Envíos a toda Guatemala | Pago Contra Entrega`;
         
-        // Hashtags dinámicos basados en el producto y tendencias
         const tagProducto = p.tituloDisplay.replace(/\s/g,'');
         const tagCategoria = p.cat.replace(/\s/g,'');
         const tagSub = p.subCat.replace(/\s/g,'');
@@ -256,6 +255,7 @@
         const ctx = canvas.getContext('2d');
         const showWeb = document.getElementById('showWeb').checked;
         const showWA = document.getElementById('showWA').checked;
+        const showPrice = document.getElementById('showPrice').checked; // NUEVO
         const userWeb = document.getElementById('userWeb').value;
         const userWA = document.getElementById('userWA').value;
 
@@ -294,9 +294,12 @@
             }
             ctx.fillText(textoAMostrar, 50, h - 160);
             
-            ctx.fillStyle = color;
-            ctx.font = "bold 100px Arial";
-            ctx.fillText("Q" + p.precio, 50, h - 60);
+            // LÓGICA CONDICIONAL PARA EL PRECIO
+            if(showPrice) {
+                ctx.fillStyle = color;
+                ctx.font = "bold 100px Arial";
+                ctx.fillText("Q" + p.precio, 50, h - 60);
+            }
 
             ctx.textAlign = "right";
             ctx.font = "30px Arial";
@@ -322,33 +325,27 @@
         } catch (e) { console.error(e); }
     }
 
-function cargarImg(url) {
-    return new Promise((res, rej) => {
-        if (!url) {
-            rej("URL vacía");
-            return;
-        }
+    function cargarImg(url) {
+        return new Promise((res, rej) => {
+            if (!url) {
+                rej("URL vacía");
+                return;
+            }
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            let cleanUrl = url.trim().replace(/^https?:\/\//, '');
+            img.src = PROXY + encodeURIComponent(cleanUrl);
+            img.onload = () => res(img);
+            img.onerror = (err) => {
+                const imgRetry = new Image();
+                imgRetry.crossOrigin = "anonymous";
+                imgRetry.src = url;
+                imgRetry.onload = () => res(imgRetry);
+                imgRetry.onerror = () => rej(err);
+            };
+        });
+    }
 
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-
-        // Limpiamos la URL: quitamos espacios y el protocolo para el proxy weserv
-        let cleanUrl = url.trim().replace(/^https?:\/\//, '');
-        
-        img.src = PROXY + encodeURIComponent(cleanUrl);
-
-        img.onload = () => res(img);
-        img.onerror = (err) => {
-            console.error("Error cargando imagen desde proxy:", img.src);
-            // Intento final sin proxy por si la imagen permite CORS nativo
-            const imgRetry = new Image();
-            imgRetry.crossOrigin = "anonymous";
-            imgRetry.src = url;
-            imgRetry.onload = () => res(imgRetry);
-            imgRetry.onerror = () => rej(err);
-        };
-    });
-}
     function copiarAlPortapapeles() {
         const area = document.getElementById('copyTextArea');
         area.select();
@@ -360,9 +357,7 @@ function cargarImg(url) {
         const canvases = document.querySelectorAll('#previewArea canvas');
         const pSelect = document.getElementById('productSelect');
         if (pSelect.value === "" || canvases.length === 0) return alert("Selecciona un producto y sincroniza.");
-        
         const productName = pSelect.options[pSelect.selectedIndex].text.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-
         canvases.forEach((canvas, i) => {
             const fileName = `${productName}_${i + 1}.png`;
             const dataUrl = canvas.toDataURL("image/png");
