@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Cotizaciones Pro | OrganizaGT</title>
     
-    <link rel="icon" href="img/OrganizaGT-v2.ico">
+    <link rel="icon" href="img/Flamax-v1.ico">
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 
     <style>
         :root { --primary-color: #1C3F60; --secondary-color: #F47C20; --bg-light: #f8f9fa; }
@@ -27,7 +30,6 @@
             position: relative;
         }
 
-        /* HEADER PROFESIONAL COMPACTO */
         .header-table { width: 100%; border-bottom: 2px solid var(--primary-color); margin-bottom: 15px; table-layout: fixed; }
         .logo-img { height: 75px; width: 75px; object-fit: contain; } 
         .header-title { font-size: 1.4rem; color: var(--primary-color); margin-bottom: 2px; }
@@ -57,6 +59,9 @@
         
         .col-codigo { display: table-cell; }
         .hide-codigo .col-codigo { display: none !important; }
+
+        /* Estilo para los grupos en el select */
+        .ts-dropdown .optgroup-header { font-weight: bold; color: var(--primary-color); background: #f0f4f8; }
     </style>
 </head>
 <body>
@@ -68,7 +73,7 @@
             
             <div class="mb-3 p-2 border rounded">
                 <label class="small fw-bold text-muted">CATÁLOGO (GOOGLE SHEETS)</label>
-                <input type="text" id="csvUrl" class="form-control form-control-sm mb-2" value="https://docs.google.com/spreadsheets/d/e/2PACX-1vR7Zyc9Avk6GHrzXR5lDrs9mvfQMptixZpH9RoZ5I7AqlVGYEWtUqWiLw_ucBxY1rHKBOPHyo9Biftj/pub?output=csv">
+                <input type="text" id="csvUrl" class="form-control form-control-sm mb-2" value="https://docs.google.com/spreadsheets/d/e/2PACX-1vTwVpHIAUk9o5t1bGr2TEn7TcSLvf_XGbX2-9irqECUDFHgdm_TjSSifw4VDKHTfMiX-dZmNz6cqXk_/pub?output=csv">
                 <button class="btn btn-dark btn-sm w-100" onclick="cargarCatalogo()">Sincronizar Productos</button>
             </div>
 
@@ -92,10 +97,10 @@
             </div>
 
             <div class="mb-3 p-2 border rounded bg-light">
-                <label class="small fw-bold">AÑADIR AL PEDIDO</label>
+                <label class="small fw-bold">AÑADIR AL PEDIDO (CON BÚSQUEDA)</label>
                 <div id="loadingMsg" class="small text-primary mb-1" style="display:none"><i class="bi bi-hourglass-split"></i> Cargando imagen...</div>
-                <select id="productSelect" class="form-select form-select-sm mb-2"></select>
-                <div class="input-group input-group-sm mb-2">
+                <select id="productSelect" class="form-select mb-2" placeholder="Busca un producto..."></select>
+                <div class="input-group input-group-sm mb-2 mt-2">
                     <span class="input-group-text">Cantidad</span>
                     <input type="number" id="prodCant" class="form-control" value="1" min="1">
                 </div>
@@ -230,16 +235,16 @@ Garantía: El producto es revisado previo la entrega, el cliente debe revisar el
 
 <script>
     const CONFIG = {
-        empresaMatriz: "OrganizaGT",
-        empresaSubsidiaria: "RdeG",
+        empresaMatriz: "Rompecabezas de Guatemala",
+        empresaSubsidiaria: "Flamax",
         logoMatriz: "img/RompecabezasDeGuatemala.png", 
-        logoSubsidiaria: "img/OrganizaGT-v2.png",
-        // Cambiado corsproxy.io por weserv.nl que gestiona mejor los 403 de imágenes de WordPress
+        logoSubsidiaria: "img/Flamax-v1.png",
         proxy: "https://images.weserv.nl/?url=" 
     };
 
     let productosCatalog = [];
     let cotizacionItems = [];
+    let tomSelectControl = null;
 
     window.onload = () => {
         document.getElementById('logoSub').src = CONFIG.logoSubsidiaria;
@@ -247,6 +252,14 @@ Garantía: El producto es revisado previo la entrega, el cliente debe revisar el
         document.getElementById('tituloEmpresas').innerText = `${CONFIG.empresaSubsidiaria} | ${CONFIG.empresaMatriz}`;
         document.getElementById('firmaEmpresa').innerText = CONFIG.empresaSubsidiaria;
         document.getElementById('outFecha').innerText = new Date().toLocaleDateString();
+        
+        // Inicializar buscador en el select
+        tomSelectControl = new TomSelect("#productSelect", {
+            create: false,
+            sortField: { field: "text", direction: "asc" },
+            maxOptions: null
+        });
+
         actualizarPDF();
     };
 
@@ -278,22 +291,42 @@ Garantía: El producto es revisado previo la entrega, el cliente debe revisar el
             const res = await fetch(url);
             const text = await res.text();
             const rawRows = csvToArray(text);
+            
+            // Agrupar por Categoría (Asumiendo que r[4] o r[5] es la categoría según tu CSV)
+            // En el CSV proporcionado, r[4] parece ser la categoría/subcategoría
             productosCatalog = rawRows.slice(1).filter(r => r.length > 1).map(r => ({
                 id: r[0],
                 nombre: r[1] ? r[1].split('|')[0].trim() : "Producto",
+                categoria: r[4] ? r[4].trim() : "Otros", // Usamos la columna de categoría
                 imagenUrl: getDirectImgUrl(r[2] ? r[2].trim() : ""), 
                 precio: parseFloat(String(r[9]).replace(/[^0-9.]/g, '')) || 0
             }));
-            const select = document.getElementById('productSelect');
-            select.innerHTML = productosCatalog.map(p => `<option value="${p.id}">${p.nombre} (${formatQ(p.precio)})</option>`).join('');
-            alert("✅ Catálogo sincronizado.");
+
+            // Actualizar TomSelect con grupos
+            tomSelectControl.clear();
+            tomSelectControl.clearOptions();
+            
+            // Agrupar productos para el select
+            const categorias = [...new Set(productosCatalog.map(p => p.categoria))];
+            categorias.forEach(cat => {
+                tomSelectControl.addOptionGroup(cat, {label: cat.toUpperCase()});
+            });
+
+            productosCatalog.forEach(p => {
+                tomSelectControl.addOption({
+                    value: p.id,
+                    text: `${p.nombre} (${formatQ(p.precio)})`,
+                    optgroup: p.categoria
+                });
+            });
+
+            alert("✅ Catálogo sincronizado y organizado por subcategorías.");
         } catch (e) { alert("❌ Error de carga."); }
     }
 
     async function toBase64(url) {
         if (!url) return "";
         try {
-            // Se limpia el protocolo para evitar errores de duplicidad en el proxy weserv.nl
             const cleanUrl = url.replace(/^https?:\/\//, '');
             const proxiedUrl = CONFIG.proxy + encodeURIComponent(cleanUrl) + "&w=200&output=jpg";
             const response = await fetch(proxiedUrl);
@@ -310,7 +343,8 @@ Garantía: El producto es revisado previo la entrega, el cliente debe revisar el
     }
 
     async function agregarItem() {
-        const id = document.getElementById('productSelect').value;
+        const id = tomSelectControl.getValue();
+        if(!id) return alert("Selecciona un producto");
         const cant = parseInt(document.getElementById('prodCant').value);
         const prod = productosCatalog.find(p => p.id === id);
         if (prod) {
@@ -453,7 +487,7 @@ Garantía: El producto es revisado previo la entrega, el cliente debe revisar el
     function getDirectImgUrl(url) {
         if (!url || !url.includes("drive.google.com")) return url;
         let id = url.includes("id=") ? url.split("id=")[1].split("&")[0] : url.split("/d/")[1].split("/")[0];
-        return `https://lh3.googleusercontent.com/u/0/d/${id}`;
+        return `https://docs.google.com/uc?export=view&id=${id}`;
     }
 </script>
 </body>
