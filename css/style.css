@@ -831,3 +831,12 @@ body:not(.vista-inicio) #portada { display: none; }
 }
 .titulo-vista .h1-sub { text-transform: none; }
 .producto h3, #modal-titulo, .destacado-titulo, .sug-nombre { letter-spacing: .01em; }
+
+/* ═══ v10.1: ventana del producto ═══════════════════════════════════════════════════════
+   Con muchas fotos, la tira de miniaturas ensanchaba la columna de la foto: el texto quedaba
+   angosto y aparecía una barra para deslizar de lado. Ahora cada columna respeta su ancho
+   y las miniaturas se deslizan dentro de su propio espacio. */
+.modal-contenido { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); overflow-x: hidden; }
+.modal-contenido > * { min-width: 0; }
+#modal-thumbnails { max-width: 100%; scrollbar-width: thin; }
+@media (max-width: 768px) { .modal-contenido { grid-template-columns: minmax(0, 1fr); } }

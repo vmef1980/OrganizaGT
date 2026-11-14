@@ -167,3 +167,10 @@ img { max-width: 100%; }
 .pc-productos { margin-top: 16px; }
 @media (max-width: 640px) { .pc-cabeza { padding: 16px; } .pc-catalogo { width: 100%; } }
 @media (prefers-reduced-motion: reduce) { .pc-subs a { transition: none; } }
+
+/* ═══ v10.1: misma protección que el catálogo ═══════════════════════════════════════════
+   El texto no se puede seleccionar (salvo nombre, código y precio, para pegarlos en WhatsApp)
+   y las fotos no se pueden arrastrar ni guardar con clic derecho. Los botones siguen funcionando. */
+body { -webkit-user-select: none; -moz-user-select: none; user-select: none; }
+.pp-info h1, .pp-codigo, .pp-precio, .pc-cabeza h1, input, textarea { -webkit-user-select: text; -moz-user-select: text; user-select: text; }
+img { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
