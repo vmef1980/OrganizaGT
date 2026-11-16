@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="referrer" content="no-referrer-when-downgrade" />
-  <!-- v9: la etiqueta canonical la pone js/app.js según la vista (inicio o categoría),
-       para que Google indexe cada categoría por separado. No poner aquí una fija.
-       Tampoco og:url: así Facebook/WhatsApp usan el enlace exacto que se compartió. -->
+  <!-- v10.2: canonical FIJA desde el primer byte (Google la ve aunque el catálogo tarde en cargar).
+       Inicio, búsquedas (?q=) y productos abiertos (?p=) -> el inicio. Categorías (?cat=&sub=) -> su página c/.
+       js/app.js la vuelve a ajustar al navegar. No usar og:url: Facebook/WhatsApp usan el enlace compartido. -->
+  <link rel="canonical" id="canonical" href="https://organizagt.rompecabezas.online/" />
+  <script>(function(){try{var u=new URLSearchParams(location.search),c=u.get("cat")||"",s=u.get("sub")||"",
+    f=function(x){return x.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"")};
+    if(c&&!u.get("q")){var r="c/"+f(c)+"/";if(s&&s!=="Todas"&&s!=="otros"&&f(s)!==f(c))r+=f(s)+"/";
+    document.getElementById("canonical").href="https://organizagt.rompecabezas.online/"+r;}}catch(e){}})();</script>
   
   <!-- <meta name="robots" content="index, follow, noimageindex" /> --> 
   <meta name="robots" content="index, follow" />
