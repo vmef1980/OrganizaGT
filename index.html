@@ -75,6 +75,7 @@
     }
   }
   </script>
+  <style>a.seo-cat-card{display:block;color:inherit;text-decoration:none}a.seo-cat-card:hover{transform:translateY(-2px)}.seo-todas{margin:6px auto 10px;max-width:900px;font-size:.8rem;line-height:1.9;text-align:center;opacity:.85}.seo-todas a{color:inherit;text-decoration:underline;text-underline-offset:2px}</style>
 </head>
 <body class="con-barra-confianza">
   <!-- v9 (velocidad): marca la vista antes de dibujar la página, así el banner y la barra azul
@@ -185,14 +186,14 @@
 
       <p class="seo-cats-title">Nuestras <span>Categorías de Productos</span></p>
       <div class="seo-cats-grid">
-        <div class="seo-cat-card"><span class="seo-cat-icon">🗄️</span><div class="seo-cat-name">Organización</div><div class="seo-cat-desc">Cajas, organizadores, almacenaje de herramientas y oficina</div></div>
-        <div class="seo-cat-card"><span class="seo-cat-icon">🔩</span><div class="seo-cat-name">Carpintería y herrajes</div><div class="seo-cat-desc">Bisagras, rieles, jaladores, tornillería, adhesivos y brocas</div></div>
-        <div class="seo-cat-card"><span class="seo-cat-icon">🍽️</span><div class="seo-cat-name">Cocina y baño</div><div class="seo-cat-desc">Gavetas, despensas, herrajes de cocina y accesorios de baño</div></div>
-        <div class="seo-cat-card"><span class="seo-cat-icon">🚪</span><div class="seo-cat-name">Closet</div><div class="seo-cat-desc">Sistemas de closet, gavetas, cajas y accesorios</div></div>
-        <div class="seo-cat-card"><span class="seo-cat-icon">🪵</span><div class="seo-cat-name">Tableros</div><div class="seo-cat-desc">MDF, melamina, plywood, OSB y slatwall</div></div>
-        <div class="seo-cat-card"><span class="seo-cat-icon">🎨</span><div class="seo-cat-name">Tintes, lacas y barnices</div><div class="seo-cat-desc">Acabados para madera de marcas reconocidas</div></div>
-        <div class="seo-cat-card"><span class="seo-cat-icon">💇</span><div class="seo-cat-name">Salón de belleza</div><div class="seo-cat-desc">Sillas, camillas, lavacabezas, espejos y estaciones</div></div>
-        <div class="seo-cat-card"><span class="seo-cat-icon">💡</span><div class="seo-cat-name">Iluminación LED</div><div class="seo-cat-desc">Tiras LED, módulos, neón y transformadores</div></div>
+        <a class="seo-cat-card" href="/c/organizacion/"><span class="seo-cat-icon">🗄️</span><div class="seo-cat-name">Organización</div><div class="seo-cat-desc">Cajas, organizadores, almacenaje de herramientas y oficina</div></a>
+        <a class="seo-cat-card" href="/c/carpinteria/"><span class="seo-cat-icon">🔩</span><div class="seo-cat-name">Carpintería y herrajes</div><div class="seo-cat-desc">Bisagras, rieles, jaladores, tornillería, adhesivos y brocas</div></a>
+        <a class="seo-cat-card" href="/c/cocina/"><span class="seo-cat-icon">🍽️</span><div class="seo-cat-name">Cocina y baño</div><div class="seo-cat-desc">Gavetas, despensas, herrajes de cocina y accesorios de baño</div></a>
+        <a class="seo-cat-card" href="/c/closet/"><span class="seo-cat-icon">🚪</span><div class="seo-cat-name">Closet</div><div class="seo-cat-desc">Sistemas de closet, gavetas, cajas y accesorios</div></a>
+        <a class="seo-cat-card" href="/c/tableros/"><span class="seo-cat-icon">🪵</span><div class="seo-cat-name">Tableros</div><div class="seo-cat-desc">MDF, melamina, plywood, OSB y slatwall</div></a>
+        <a class="seo-cat-card" href="/c/tintes-lacas-barnices/"><span class="seo-cat-icon">🎨</span><div class="seo-cat-name">Tintes, lacas y barnices</div><div class="seo-cat-desc">Acabados para madera de marcas reconocidas</div></a>
+        <a class="seo-cat-card" href="/c/salone/"><span class="seo-cat-icon">💇</span><div class="seo-cat-name">Salón de belleza</div><div class="seo-cat-desc">Sillas, camillas, lavacabezas, espejos y estaciones</div></a>
+        <a class="seo-cat-card" href="/c/iluminacion/"><span class="seo-cat-icon">💡</span><div class="seo-cat-name">Iluminación LED</div><div class="seo-cat-desc">Tiras LED, módulos, neón y transformadores</div></a>
       </div>
 
       <div class="seo-info-grid">
@@ -240,6 +241,8 @@
   <footer class="footer-principal">
     <div class="footer-content">
       <div class="footer-links" id="footer-social-links"></div>
+      <!-- v10.2: enlaces fijos a las páginas de categoría (c/): así Google llega a ellas y, desde ahí, a cada producto -->
+      <nav class="seo-todas" aria-label="Todas las categorías"><strong>Categorías:</strong> <a href="/c/organizacion/">Organización</a> · <a href="/c/carpinteria/">Carpintería</a> · <a href="/c/cocina/">Cocina</a> · <a href="/c/bano/">Baño</a> · <a href="/c/closet/">Closet</a> · <a href="/c/living/">Living</a> · <a href="/c/oficina/">Oficina</a> · <a href="/c/exterior/">Exterior</a> · <a href="/c/tableros/">Tableros</a> · <a href="/c/tintes-lacas-barnices/">Tintes, lacas y barnices</a> · <a href="/c/iluminacion/">Iluminación</a> · <a href="/c/salone/">Salone</a> · <a href="/c/herramientas-bbt/">Herramientas BBT</a> · <a href="/c/glass/">Glass</a> · <a href="/c/fresh/">Fresh</a> · <a href="/c/dtc/">DTC</a></nav>
       <div class="footer-info">
         <span id="f-copy"></span> | <span id="f-loc"></span> | <a href="politicas.html">Políticas de compra</a> | <a href="privacidad.html">Política de privacidad</a> | <span id="f-dev"></span>
       </div>
